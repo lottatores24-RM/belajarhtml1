@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Toko Sepatu Riki - Riki Shoes</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- defer supaya JS jalan setelah HTML selesai -->
+<script src="script.js" defer></script>
+
+</head>
+
+<body>
+
+<!-- Cart Overlay -->
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="navbar">
+
+<a href="#" class="logo">Borgan Shoes</a>
+
+<div class="cart-icon" id="cartIcon">
+<i class="fas fa-shopping-cart"></i>
+<span id="cart-count">0</span>
+</div>
+
+</div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+<div class="hero-content">
+<h2>Sepatu Olahraga Terbaik Untuk Performa Maksimal</h2>
+
+<p>
+Temukan sepatu olahraga berkualitas dengan harga terbaik hanya di Toko Riki. 
+Koleksi terbaru dari brand ternama siap menemani aktivitas olahraga Anda.
+</p>
+
+<a href="#products" class="cta-button">Lihat Produk</a>
+</div>
+
+</section>
+
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features" id="features">
+
+<h2>Kenapa Harus Beli di Toko Riki?</h2>
+
+<div class="feature-container">
+
+<div class="feature-box">
+<i class="fas fa-check-circle"></i>
+<h3>Kualitas Terjamin</h3>
+<p>Produk original dengan kualitas terbaik dan garansi resmi</p>
+</div>
+
+<div class="feature-box">
+<i class="fas fa-tag"></i>
+<h3>Harga Terbaik</h3>
+<p>Harga lebih murah dari toko lainnya dengan kualitas setara</p>
+</div>
+
+<div class="feature-box">
+<i class="fas fa-shipping-fast"></i>
+<h3>Pengiriman Cepat</h3>
+<p>Pengiriman cepat ke seluruh Indonesia dalam 2-5 hari kerja</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="products" id="products">
+
+<h2>Katalog Sepatu Olahraga</h2>
+
+<div class="product-container">
+
+<!-- PRODUCT 1 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" alt="Nike Air Zoom">
+</div>
+
+<h3>Nike Air Zoom Pegasus</h3>
+
+<p class="price">Rp1.200.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 10</p>
+
+<div class="product-actions">
+<button onclick="addToCart(1)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(1)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+
+<!-- PRODUCT 2 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400" alt="Adidas Ultraboost">
+</div>
+
+<h3>Adidas Ultraboost 22</h3>
+
+<p class="price">Rp1.500.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 8</p>
+
+<div class="product-actions">
+<button onclick="addToCart(2)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(2)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+
+<!-- PRODUCT 3 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400" alt="Puma Velocity">
+</div>
+
+<h3>Puma Velocity Nitro</h3>
+
+<p class="price">Rp900.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 12</p>
+
+<div class="product-actions">
+<button onclick="addToCart(3)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(3)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+
+<!-- PRODUCT 4 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1539185441755-769473a23570?w=400" alt="New Balance">
+</div>
+
+<h3>New Balance Fresh Foam 1080</h3>
+
+<p class="price">Rp1.300.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 6</p>
+
+<div class="product-actions">
+<button onclick="addToCart(4)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(4)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+
+<!-- PRODUCT 5 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400" alt="Asics Gel Kayano">
+</div>
+
+<h3>Asics Gel-Kayano 30</h3>
+
+<p class="price">Rp1.400.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 5</p>
+
+<div class="product-actions">
+<button onclick="addToCart(5)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(5)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+
+<!-- PRODUCT 6 -->
+
+<div class="product-card">
+
+<div class="product-image">
+<img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=400" alt="Reebok Floatride">
+</div>
+
+<h3>Reebok Floatride Energy</h3>
+
+<p class="price">Rp800.000</p>
+
+<p class="stock"><i class="fas fa-box"></i> Stok: 9</p>
+
+<div class="product-actions">
+<button onclick="addToCart(6)" class="add-cart">
+<i class="fas fa-cart-plus"></i> Tambah Keranjang
+</button>
+
+<button onclick="buyNow(6)" class="buy-now">
+<i class="fab fa-whatsapp"></i> Beli Sekarang
+</button>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= REVIEWS ================= -->
+
+<section class="reviews">
+
+<h2>Ulasan Pembeli</h2>
+
+<div class="review-container">
+
+<div class="review-box">
+<div class="stars">⭐⭐⭐⭐⭐</div>
+<p>"Sepatunya nyaman banget buat olahraga! Kualitas oke punya, recommend banget buat teman-teman yang suka fitness."</p>
+<h4>- Andi S.</h4>
+</div>
+
+<div class="review-box">
+<div class="stars">⭐⭐⭐⭐⭐</div>
+<p>"Pengiriman cepat dan packing rapih. Kualitas produk sesuai ekspektasi. Terima kasih Toko Riki!"</p>
+<h4>- Budi Santoso</h4>
+</div>
+
+<div class="review-box">
+<div class="stars">⭐⭐⭐⭐</div>
+<p>"Harga terjangkau dengan kualitas bagus. Saya sudah belanja tiga kali dan selalu puas."</p>
+<h4>- Citra Dewi</h4>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= CART SIDEBAR ================= -->
+
+<div class="cart-sidebar" id="cartSidebar">
+
+<div class="cart-header">
+<h2><i class="fas fa-shopping-cart"></i> Keranjang Belanja</h2>
+<button class="close-cart" id="closeCart">
+<i class="fas fa-times"></i>
+</button>
+</div>
+
+<div class="cart-items" id="cartItems">
+
+<!-- item cart muncul dari JavaScript -->
+
+</div>
+
+<div class="cart-footer">
+<h3>Total: <span class="total-price" id="totalPrice">Rp0</span></h3>
+
+<button onclick="checkout()" class="checkout-btn">
+<i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+</button>
+</div>
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="footer-content">
+<p>&copy; 2026 Toko Sepatu Riki. All rights reserved.</p>
+<p>Dibuat dengan <i class="fas fa-heart"></i> oleh Riki Shoes</p>
+</div>
+
+</footer>
+
+
+</body>
+</html>
+
