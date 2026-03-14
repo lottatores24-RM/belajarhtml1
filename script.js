@@ -151,14 +151,21 @@ function buyNow(id) {
     const timestamp = new Date().toLocaleString('id-ID');
     const totalItems = checkedItems.reduce((sum, item) => sum + item.qty, 0);
     
+    // Fix scope issue in buyNow - use product data for single item order
+    const singleItemOrder = [{
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        qty: 1
+    }];
     const newOrder = {
         id: orderId,
         timestamp: timestamp,
-        status: 'telah di konfirmasi',
-        totalItems: totalItems,
-        total: totalOrder,
-        items: checkedItems.map(i => ({...i})),
-        address: {...shippingAddress}
+        status: 'pending',
+        totalItems: 1,
+        total: product.price,
+        items: singleItemOrder,
+        address: shippingAddress || {recipientName: 'N/A', phoneNumber: 'N/A', address: 'N/A', city: 'N/A', postalCode: 'N/A'}
     };
     
     history.unshift(newOrder);
@@ -315,6 +322,39 @@ function checkout() {
     
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+    
+    // Save to history as "pesanan anda saat ini"
+    const orderId = 'ORD' + Date.now();
+    const timestamp = new Date().toLocaleString('id-ID');
+    const orderItems = checkedItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        qty: item.qty
+    }));
+    const totalItemsCount = checkedItems.reduce((sum, item) => sum + item.qty, 0);
+    
+    const newOrder = {
+        id: orderId,
+        timestamp: timestamp,
+        status: 'current',
+        totalItems: totalItemsCount,
+        total: totalOrder,
+        items: orderItems,
+        address: shippingAddress
+    };
+    
+    history.unshift(newOrder);
+    saveData();
+    
+    // Clear checked items from cart
+    cart = cart.filter(item => !item.checked);
+    renderCart();
+    updateCartCount();
+    saveData();
+    
+    showNotification(`Pesanan Anda saat ini #${orderId} ditambahkan ke riwayat! (${totalItemsCount} item)`);
+    toggleCart(false);
 }
 
 // Fungsi untuk menampilkan notifikasi
@@ -614,24 +654,94 @@ checkout = function() {
 };
 
 // Fungsi untuk render riwayat di index
+// Admin functions
+const ADMIN_PASSWORD = 'admin123';
+
+function loginAdmin(password) {
+    if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('isAdmin', 'true');
+        showNotification('Admin login berhasil!');
+        location.reload(); // Refresh to show admin links
+        return true;
+    } else {
+        alert('Password salah!');
+        return false;
+    }
+}
+
+function logoutAdmin() {
+    localStorage.removeItem('isAdmin');
+    showNotification('Admin logout');
+    location.reload();
+}
+
+function isAdminLoggedIn() {
+    return localStorage.getItem('isAdmin') === 'true';
+}
+
+function getAllOrders() {
+    loadData();
+    return history;
+}
+
+function updateOrderStatus(orderId, newStatus) {
+    loadData();
+    const orderIndex = history.findIndex(o => o.id === orderId);
+    if (orderIndex !== -1) {
+        history[orderIndex].status = newStatus;
+        saveData();
+        showNotification(`Order ${orderId} diupdate ke ${newStatus}`);
+        renderAdminOrders();
+        return true;
+    }
+    return false;
+}
+
+// Customer history icon - only confirmed/shipped
 function renderHistoryIcon() {
     loadData();
     const navbar = document.querySelector('.navbar');
-    let histIcon = navbar.querySelector('.history-icon');
-    const countSpan = document.getElementById('history-count');
+    let histIcon = navbar.querySelector('.history-icon-customer');
     
-    if (history.length > 0) {
+    const confirmedCount = history.filter(o => ['pending', 'current', 'confirmed', 'shipped'].includes(o.status)).length;
+    
+    if (confirmedCount > 0) {
         if (!histIcon) {
             histIcon = document.createElement('div');
-            histIcon.className = 'history-icon';
+            histIcon.className = 'history-icon history-icon-customer';
             histIcon.onclick = () => location.href = 'history.html';
-            histIcon.innerHTML = `<i class="fas fa-history"></i><span id="history-count">${history.length}</span>`;
+            histIcon.innerHTML = `<i class="fas fa-history"></i><span id="history-count">${confirmedCount}</span>`;
             navbar.appendChild(histIcon);
-        } else if (countSpan) {
-            countSpan.textContent = history.length;
+        } else {
+            const countSpan = histIcon.querySelector('#history-count');
+            if (countSpan) countSpan.textContent = confirmedCount;
         }
     } else if (histIcon) {
         histIcon.remove();
+    }
+}
+
+// Admin dashboard link
+function renderAdminIcon() {
+    if (isAdminLoggedIn()) {
+        const navbar = document.querySelector('.navbar');
+        let adminIcon = navbar.querySelector('.admin-icon');
+        if (!adminIcon) {
+            adminIcon = document.createElement('div');
+            adminIcon.className = 'history-icon admin-icon';
+            adminIcon.onclick = () => location.href = 'admin.html';
+            adminIcon.innerHTML = `<i class="fas fa-cogs"></i><span>Admin</span>`;
+            navbar.appendChild(adminIcon);
+        }
+        
+        let logoutBtn = navbar.querySelector('.logout-btn');
+        if (!logoutBtn) {
+            logoutBtn = document.createElement('button');
+            logoutBtn.className = 'logout-btn';
+            logoutBtn.textContent = 'Logout';
+            logoutBtn.onclick = logoutAdmin;
+            navbar.appendChild(logoutBtn);
+        }
     }
 }
 

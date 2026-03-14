@@ -1077,3 +1077,20 @@ footer {
     opacity: 0.3;
 }
 
+.order-status.pending {
+    background: var(--gray);
+}
+
+.order-status.current {
+    background: var(--warning-color);
+    color: var(--white);
+}
+
+.order-status.confirmed {
+    background: var(--success-color);
+}
+
+.order-status.shipped {
+    background: var(--accent-color);
+}
+

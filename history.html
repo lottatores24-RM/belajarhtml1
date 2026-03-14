@@ -39,19 +39,21 @@ function renderHistory() {
     
     loadData();
     
-    if (history.length === 0) {
+    const customerHistory = history.filter(o => ['pending', 'current', 'confirmed', 'shipped'].includes(o.status));
+    
+    if (customerHistory.length === 0) {
         historyList.innerHTML = `
             <div class="empty-history">
                 <i class="fas fa-clock"></i>
-                <p>Belum ada riwayat pesanan</p>
+        <p>Belum ada riwayat pesanan</p>
             </div>
         `;
     } else {
-        historyList.innerHTML = history.map(order => `
+        historyList.innerHTML = customerHistory.map(order => `
             <div class="history-item">
                 <div class="history-header">
                     <div class="order-id">#${order.id}</div>
-                    <div class="order-status ${order.status}">${order.status}</div>
+                    <div class="order-status ${order.status}">${order.status === 'current' ? 'Pesanan Anda Saat Ini' : order.status}</div>
                     <div class="order-date">${order.timestamp}</div>
                 </div>
                 <div class="history-details">
@@ -71,7 +73,7 @@ function renderHistory() {
         `).join('');
     }
     
-    historyCount.textContent = history.length;
+    historyCount.textContent = customerHistory.length;
 }
 
 renderHistory();
