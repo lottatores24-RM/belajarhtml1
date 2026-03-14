@@ -145,6 +145,33 @@ function buyNow(id) {
     
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+    
+    // Auto-save to purchase history and clear cart
+    const orderId = 'ORD' + Date.now();
+    const timestamp = new Date().toLocaleString('id-ID');
+    const totalItems = checkedItems.reduce((sum, item) => sum + item.qty, 0);
+    
+    const newOrder = {
+        id: orderId,
+        timestamp: timestamp,
+        status: 'telah di konfirmasi',
+        totalItems: totalItems,
+        total: totalOrder,
+        items: checkedItems.map(i => ({...i})),
+        address: {...shippingAddress}
+    };
+    
+    history.unshift(newOrder);
+    saveData();
+    
+    // Clear checked items from cart
+    cart = cart.filter(item => !item.checked);
+    renderCart();
+    updateCartCount();
+    saveData();
+    
+    showNotification(`Riwayat pembelian #${orderId} ditambahkan! ${totalItems} item`);
+    toggleCart(false);
 }
 
 // Fungsi untuk merender keranjang
@@ -588,14 +615,23 @@ checkout = function() {
 
 // Fungsi untuk render riwayat di index
 function renderHistoryIcon() {
-    const cartIcon = document.getElementById('cartIcon');
-    const historyCount = document.getElementById('history-count');
-    if (!historyCount) return;
-    
     loadData();
-    historyCount.textContent = history.length;
+    const navbar = document.querySelector('.navbar');
+    let histIcon = navbar.querySelector('.history-icon');
+    const countSpan = document.getElementById('history-count');
+    
     if (history.length > 0) {
-        cartIcon.parentNode.insertAdjacentHTML('beforeend', '<div class="history-icon" onclick="window.location.href=\'history.html\'"><i class="fas fa-history"></i><span id="history-count">' + history.length + '</span></div>');
+        if (!histIcon) {
+            histIcon = document.createElement('div');
+            histIcon.className = 'history-icon';
+            histIcon.onclick = () => location.href = 'history.html';
+            histIcon.innerHTML = `<i class="fas fa-history"></i><span id="history-count">${history.length}</span>`;
+            navbar.appendChild(histIcon);
+        } else if (countSpan) {
+            countSpan.textContent = history.length;
+        }
+    } else if (histIcon) {
+        histIcon.remove();
     }
 }
 

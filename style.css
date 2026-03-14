@@ -646,6 +646,29 @@ header {
     box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
 }
 
+.history-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--warning-color), #e67e22);
+    border: none;
+    color: var(--white);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.history-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
+}
+
 .checkout-btn:disabled {
     background: #95a5a6;
     cursor: not-allowed;
@@ -919,7 +942,7 @@ footer {
     animation: pulse 1s ease infinite;
 }
 
-/* History Icon */
+/* History Icon & List Styles */
 .history-icon {
     position: relative;
     font-size: 24px;
@@ -947,5 +970,110 @@ footer {
     font-weight: bold;
     min-width: 20px;
     text-align: center;
+}
+
+/* History Page Styles */
+.history-section {
+    max-width: 1000px;
+    margin: 100px auto 50px;
+    padding: 0 20px;
+}
+
+.history-container {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    min-height: 400px;
+}
+
+.history-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.history-item:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-id {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.order-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--white);
+}
+
+.order-status.telah\ di\ konfirmasi {
+    background: var(--success-color);
+}
+
+.order-date {
+    font-size: 14px;
+    color: var(--gray);
+}
+
+.history-details p {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.address {
+    background: var(--light-bg);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.order-items {
+    margin-top: 15px;
+}
+
+.order-items ul {
+    list-style: none;
+    padding: 10px;
+    background: var(--light-bg);
+    border-radius: 8px;
+}
+
+.order-items li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-items li:last-child {
+    border-bottom: none;
+}
+
+.empty-history {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray);
+}
+
+.empty-history i {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.3;
 }
 

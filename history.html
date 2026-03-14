@@ -59,7 +59,12 @@ function renderHistory() {
                     <p><strong>Total Bayar:</strong> Rp ${order.total.toLocaleString()}</p>
                     <div class="address">
                         <strong>Alamat:</strong> ${order.address.recipientName}<br>
+                        ${order.address.phoneNumber}<br>
                         ${order.address.address}, ${order.address.city} ${order.address.postalCode}
+                    </div>
+                    <div class="order-items">
+                        <strong>Items:</strong>
+                        <ul>${order.items.map(item => `<li>${item.name} x${item.qty} (Rp ${(item.price * item.qty).toLocaleString()})</li>`).join('')}</ul>
                     </div>
                 </div>
             </div>
