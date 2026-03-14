@@ -13,6 +13,7 @@ const WHATSAPP_NUMBER = "6281993371188";
 
 // ================= STATE =================
 let cart = [];
+let shippingAddress = null;
 
 // ================= DOM ELEMENTS =================
 const cartIcon = document.getElementById('cartIcon');
@@ -314,6 +315,243 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ================= FUNGSI ALAMAT PENGIRIMAN =================
+
+// Fungsi untuk memulai checkout (tampilkan form alamat)
+function startCheckout() {
+    const checkedItems = cart.filter(item => item.checked);
+    
+    if (checkedItems.length === 0) {
+        alert('Silakan pilih produk yang ingin dibeli terlebih dahulu!');
+        return;
+    }
+    
+    // Jika sudah ada alamat tersimpan, langsung checkout ke WhatsApp
+    if (shippingAddress) {
+        checkoutWithAddress();
+        return;
+    }
+    
+    // Tampilkan form alamat
+    showShippingForm();
+}
+
+// Tampilkan form alamat pengiriman
+function showShippingForm() {
+    const shippingForm = document.getElementById('shippingForm');
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.querySelector('.cart-footer');
+    
+    // Jika sudah ada alamat tersimpan, tampilkan
+    if (shippingAddress) {
+        showSavedAddress();
+        return;
+    }
+    
+    // Tampilkan form
+    shippingForm.classList.add('active');
+    cartItems.style.display = 'none';
+    cartFooter.style.display = 'none';
+}
+
+// Tampilkan alamat yang sudah disimpan
+function showSavedAddress() {
+    const shippingForm = document.getElementById('shippingForm');
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.querySelector('.cart-footer');
+    
+    // Cek apakah element saved-address sudah ada
+    let savedAddressEl = document.getElementById('savedAddress');
+    
+    if (!savedAddressEl) {
+        // Buat element saved-address
+        savedAddressEl = document.createElement('div');
+        savedAddressEl.id = 'savedAddress';
+        savedAddressEl.className = 'saved-address';
+        
+        // Insert sebelum form
+        shippingForm.parentNode.insertBefore(savedAddressEl, shippingForm);
+    }
+    
+    // Update konten
+    savedAddressEl.innerHTML = `
+        <h4><i class="fas fa-check-circle"></i> Alamat Pengiriman:</h4>
+        <p><strong>${shippingAddress.recipientName}</strong></p>
+        <p>${shippingAddress.phoneNumber}</p>
+        <p>${shippingAddress.address}</p>
+        <p>${shippingAddress.city} - ${shippingAddress.postalCode}</p>
+        <button onclick="editAddress()" class="edit-address">
+            <i class="fas fa-edit"></i> Ubah Alamat
+        </button>
+    `;
+    
+    savedAddressEl.classList.add('active');
+    shippingForm.classList.remove('active');
+    cartItems.style.display = 'block';
+    cartFooter.style.display = 'block';
+}
+
+// Fungsi untuk mengubah alamat
+function editAddress() {
+    const savedAddressEl = document.getElementById('savedAddress');
+    const shippingForm = document.getElementById('shippingForm');
+    
+    // Isi form dengan data yang ada
+    document.getElementById('recipientName').value = shippingAddress.recipientName || '';
+    document.getElementById('phoneNumber').value = shippingAddress.phoneNumber || '';
+    document.getElementById('shippingAddress').value = shippingAddress.address || '';
+    document.getElementById('city').value = shippingAddress.city || '';
+    document.getElementById('postalCode').value = shippingAddress.postalCode || '';
+    
+    // Tampilkan form, sembunyikan saved address
+    if (savedAddressEl) {
+        savedAddressEl.classList.remove('active');
+    }
+    shippingForm.classList.add('active');
+    
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.querySelector('.cart-footer');
+    cartItems.style.display = 'none';
+    cartFooter.style.display = 'none';
+}
+
+// Konfirmasi alamat dan lanjut ke checkout
+function confirmAddress() {
+    const recipientName = document.getElementById('recipientName').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const address = document.getElementById('shippingAddress').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const postalCode = document.getElementById('postalCode').value.trim();
+    
+    // Validasi
+    if (!recipientName) {
+        alert('Silakan masukkan nama penerima!');
+        document.getElementById('recipientName').focus();
+        return;
+    }
+    if (!phoneNumber) {
+        alert('Silakan masukkan nomor telepon!');
+        document.getElementById('phoneNumber').focus();
+        return;
+    }
+    if (!address) {
+        alert('Silakan masukkan alamat lengkap!');
+        document.getElementById('shippingAddress').focus();
+        return;
+    }
+    if (!city) {
+        alert('Silakan masukkan kota/kabupaten!');
+        document.getElementById('city').focus();
+        return;
+    }
+    if (!postalCode) {
+        alert('Silakan masukkan kode pos!');
+        document.getElementById('postalCode').focus();
+        return;
+    }
+    
+    // Simpan alamat
+    shippingAddress = {
+        recipientName,
+        phoneNumber,
+        address,
+        city,
+        postalCode
+    };
+    
+    // Sembunyikan form dan tampilkan ringkasan
+    const shippingForm = document.getElementById('shippingForm');
+    shippingForm.classList.remove('active');
+    
+    // Tampilkan alamat tersimpan
+    showSavedAddress();
+    
+    // Tampilkan kembali item cart dan footer
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.querySelector('.cart-footer');
+    cartItems.style.display = 'block';
+    cartFooter.style.display = 'block';
+    
+    showNotification('Alamat pengiriman telah disimpan!');
+}
+
+// Batalkan input alamat
+function cancelAddress() {
+    const shippingForm = document.getElementById('shippingForm');
+    const savedAddressEl = document.getElementById('savedAddress');
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.querySelector('.cart-footer');
+    
+    // Jika tidak ada alamat tersimpan, sembunyikan form
+    if (!shippingAddress) {
+        shippingForm.classList.remove('active');
+        cartItems.style.display = 'block';
+        cartFooter.style.display = 'block';
+    } else {
+        // Tampilkan alamat tersimpan
+        showSavedAddress();
+    }
+    
+    // Clear form
+    document.getElementById('recipientName').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('shippingAddress').value = '';
+    document.getElementById('city').value = '';
+    document.getElementById('postalCode').value = '';
+}
+
+// Fungsi checkout utama (dengan alamat)
+function checkoutWithAddress() {
+    const checkedItems = cart.filter(item => item.checked);
+    
+    if (checkedItems.length === 0) {
+        alert('Silakan pilih produk yang ingin dibeli!');
+        return;
+    }
+    
+    let message = "Halo Toko Riki, saya ingin memesan:\n\n";
+    
+    let totalOrder = 0;
+    let totalItems = 0;
+    
+    // Detail produk
+    checkedItems.forEach(item => {
+        const subtotal = item.price * item.qty;
+        totalOrder += subtotal;
+        totalItems += item.qty;
+        message += `• ${item.name}\n`;
+        message += `  Jumlah: ${item.qty} x Rp ${item.price.toLocaleString()}\n`;
+        message += `  Subtotal: Rp ${subtotal.toLocaleString()}\n\n`;
+    });
+    
+    message += "================================\n";
+    message += `TOTAL ITEM: ${totalItems} pcs\n`;
+    message += `TOTAL PEMBAYARAN: Rp ${totalOrder.toLocaleString()}\n`;
+    message += "================================\n\n";
+    
+    // Tambahkan alamat pengiriman
+    message += "📦 ALAMAT PENGIRIMAN:\n";
+    message += `Nama: ${shippingAddress.recipientName}\n`;
+    message += `Telepon: ${shippingAddress.phoneNumber}\n`;
+    message += `Alamat: ${shippingAddress.address}\n`;
+    message += `${shippingAddress.city} - ${shippingAddress.postalCode}\n\n`;
+    
+    message += "Mohon konfirmasi pesanan saya. Terima kasih!";
+    
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+// Override fungsi checkout asli untuk menggunakan alamat
+const originalCheckout = checkout;
+checkout = function() {
+    if (shippingAddress) {
+        checkoutWithAddress();
+    } else {
+        startCheckout();
+    }
+};
 
 // ================= INISIALISASI =================
 // Render cart saat halaman load

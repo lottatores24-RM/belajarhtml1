@@ -310,6 +310,35 @@ Koleksi terbaru dari brand ternama siap menemani aktivitas olahraga Anda.
 </button>
 </div>
 
+<!-- Form Alamat Pengiriman -->
+<div class="shipping-form" id="shippingForm">
+    <h3><i class="fas fa-map-marker-alt"></i> Alamat Pengiriman</h3>
+    <div class="form-group">
+        <label for="recipientName">Nama Penerima:</label>
+        <input type="text" id="recipientName" placeholder="Masukkan nama lengkap">
+    </div>
+    <div class="form-group">
+        <label for="phoneNumber">Nomor Telepon:</label>
+        <input type="tel" id="phoneNumber" placeholder="Contoh: 081234567890">
+    </div>
+    <div class="form-group">
+        <label for="shippingAddress">Alamat Lengkap:</label>
+        <textarea id="shippingAddress" rows="3" placeholder="Nama jalan, RT/RW, kelurahan, kecamatan"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="city">Kota/Kabupaten:</label>
+        <input type="text" id="city" placeholder="Contoh: Jakarta Selatan">
+    </div>
+    <div class="form-group">
+        <label for="postalCode">Kode Pos:</label>
+        <input type="text" id="postalCode" placeholder="Contoh: 12345">
+    </div>
+    <div class="form-buttons">
+        <button onclick="cancelAddress()" class="btn-cancel">Batal</button>
+        <button onclick="confirmAddress()" class="btn-confirm">Konfirmasi</button>
+    </div>
+</div>
+
 <div class="cart-items" id="cartItems">
 
 <!-- item cart muncul dari JavaScript -->
@@ -319,7 +348,7 @@ Koleksi terbaru dari brand ternama siap menemani aktivitas olahraga Anda.
 <div class="cart-footer">
 <h3>Total: <span class="total-price" id="totalPrice">Rp0</span></h3>
 
-<button onclick="checkout()" class="checkout-btn">
+<button onclick="startCheckout()" class="checkout-btn">
 <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
 </button>
 </div>
