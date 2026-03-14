@@ -14,6 +14,32 @@ const WHATSAPP_NUMBER = "6281993371188";
 // ================= STATE =================
 let cart = [];
 let shippingAddress = null;
+let history = [];
+
+// ================= PERSISTENCE FUNCTIONS =================
+function loadData() {
+    try {
+        const savedCart = localStorage.getItem('cart');
+        const savedAddress = localStorage.getItem('shippingAddress');
+        const savedHistory = localStorage.getItem('orderHistory');
+        
+        if (savedCart) cart = JSON.parse(savedCart);
+        if (savedAddress) shippingAddress = JSON.parse(savedAddress);
+        if (savedHistory) history = JSON.parse(savedHistory);
+    } catch (e) {
+        console.error('Error loading data:', e);
+    }
+}
+
+function saveData() {
+    try {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        if (shippingAddress) localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
+        localStorage.setItem('orderHistory', JSON.stringify(history));
+    } catch (e) {
+        console.error('Error saving data:', e);
+    }
+}
 
 // ================= DOM ELEMENTS =================
 const cartIcon = document.getElementById('cartIcon');
@@ -99,9 +125,11 @@ function addToCart(id) {
     
     renderCart();
     updateCartCount();
+    saveData();
     
     // Feedback ke user
     showNotification(`${product.name} ditambahkan ke keranjang!`);
+    saveData();
 }
 
 // Fungsi untuk beli langsung (langsung WhatsApp)
@@ -176,6 +204,7 @@ function increaseQty(id) {
             item.qty++;
             renderCart();
             updateCartCount();
+            saveData();
         } else {
             alert('Maaf, stok tidak mencukupi!');
         }
@@ -191,6 +220,7 @@ function decreaseQty(id) {
             item.qty--;
             renderCart();
             updateCartCount();
+            saveData();
         } else {
             // Jika qty = 1, hapus item
             removeItem(id);
@@ -203,6 +233,7 @@ function removeItem(id) {
     cart = cart.filter(item => item.id !== id);
     renderCart();
     updateCartCount();
+    saveData();
 }
 
 // Fungsi untuk toggle checkbox item
@@ -212,6 +243,7 @@ function toggleItem(id) {
     if (item) {
         item.checked = !item.checked;
         calculateTotal();
+        saveData();
     }
 }
 
@@ -474,6 +506,7 @@ function confirmAddress() {
     cartFooter.style.display = 'block';
     
     showNotification('Alamat pengiriman telah disimpan!');
+    saveData();
 }
 
 // Batalkan input alamat
@@ -553,8 +586,22 @@ checkout = function() {
     }
 };
 
+// Fungsi untuk render riwayat di index
+function renderHistoryIcon() {
+    const cartIcon = document.getElementById('cartIcon');
+    const historyCount = document.getElementById('history-count');
+    if (!historyCount) return;
+    
+    loadData();
+    historyCount.textContent = history.length;
+    if (history.length > 0) {
+        cartIcon.parentNode.insertAdjacentHTML('beforeend', '<div class="history-icon" onclick="window.location.href=\'history.html\'"><i class="fas fa-history"></i><span id="history-count">' + history.length + '</span></div>');
+    }
+}
+
 // ================= INISIALISASI =================
-// Render cart saat halaman load
+loadData();
 renderCart();
 updateCartCount();
+renderHistoryIcon();
 

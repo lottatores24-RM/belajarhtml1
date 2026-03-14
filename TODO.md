@@ -1,14 +1,12 @@
-# TODO - Implementasi Alamat Pengiriman
+# TODO - E-commerce Checkout & History Features
 
-## Plan:
-- [x] 1. Baca dan pahami file yang ada (index.html, script.js, style.css)
-- [x] 2. Buat plan dan minta persetujuan user
-- [x] 3. Implementasi:
-    - [x] a. Tambahkan form alamat di HTML (dalam cart sidebar)
-    - [x] b. Tambahkan styling CSS untuk form alamat
-    - [x] c. Modifikasi JavaScript untuk:
-        - [x] - Tampilkan form sebelum checkout
-        - [x] - Simpan alamat pengiriman
-        - [x] - Tampilkan alamat di pesan WhatsApp
-- [x] 4. Testing dan verifikasi
+## Approved Plan Steps:
+- [x] 1. Add localStorage persistence for cart, shippingAddress, history in script.js (load/save functions)
+- [x] 2. Modify buyNow(id): Add single product to cart, open cart+address flow
+- [ ] 3. Update checkoutWithAddress(): Move checked items to history (status "telah di konfirmasi"), clear checked cart
+- [ ] 4. Add History UI section in index.html (after reviews, list orders)
+- [ ] 5. Add history button in header/cart sidebar
+- [ ] 6. Style history section in style.css
+- [ ] 7. Test: buyNow/addToCart -> checkout -> verify cart clear + history populated
+- [ ] 8. Complete task
 

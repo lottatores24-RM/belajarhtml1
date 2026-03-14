@@ -919,3 +919,33 @@ footer {
     animation: pulse 1s ease infinite;
 }
 
+/* History Icon */
+.history-icon {
+    position: relative;
+    font-size: 24px;
+    color: var(--white);
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 15px;
+    transition: var(--transition);
+}
+
+.history-icon:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+#history-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--warning-color);
+    color: var(--white);
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riwayat Pesanan - Borgan Shoes</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<header>
+<div class="navbar">
+<a href="index.html" class="logo">Borgan Shoes</a>
+<div class="cart-icon" onclick="toggleHistory()">
+<i class="fas fa-history"></i>
+<span id="history-count">0</span>
+</div>
+</div>
+</header>
+
+<section class="history-section">
+<h2>Riwayat Pesanan</h2>
+<div id="historyList" class="history-container">
+    <div class="empty-history">
+        <i class="fas fa-clock"></i>
+        <p>Belum ada riwayat pesanan</p>
+    </div>
+</div>
+</section>
+
+<script>
+function toggleHistory() {
+    window.location.href = 'index.html';
+}
+function renderHistory() {
+    const historyList = document.getElementById('historyList');
+    const historyCount = document.getElementById('history-count');
+    
+    loadData();
+    
+    if (history.length === 0) {
+        historyList.innerHTML = `
+            <div class="empty-history">
+                <i class="fas fa-clock"></i>
+                <p>Belum ada riwayat pesanan</p>
+            </div>
+        `;
+    } else {
+        historyList.innerHTML = history.map(order => `
+            <div class="history-item">
+                <div class="history-header">
+                    <div class="order-id">#${order.id}</div>
+                    <div class="order-status ${order.status}">${order.status}</div>
+                    <div class="order-date">${order.timestamp}</div>
+                </div>
+                <div class="history-details">
+                    <p><strong>Total Item:</strong> ${order.totalItems} pcs</p>
+                    <p><strong>Total Bayar:</strong> Rp ${order.total.toLocaleString()}</p>
+                    <div class="address">
+                        <strong>Alamat:</strong> ${order.address.recipientName}<br>
+                        ${order.address.address}, ${order.address.city} ${order.address.postalCode}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    historyCount.textContent = history.length;
+}
+
+renderHistory();
+</script>
+</body>
+</html>
